@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.board.model.dao.UserDao">
+
+	<resultMap type="User" id="userMap">
+		<result column="id" property="id"/>
+		<result column="password" property="password"/>
+		<result column="name" property="name"/>
+		<result column="email" property="email"/>
+		<result column="created_at" property="createdAt"/>
+	</resultMap>
+	
+	
+	<select id="selectUser" parameterType="String" resultMap="userMap">
+		SELECT *
+		FROM user
+		WHERE id = #{id}
+	</select>
+	
+	<insert id="insertUser" parameterType="User" >
+		INSERT INTO user (id, password, name, email)
+		VALUES (#{id}, #{password}, #{name}, #{email})
+	</insert>
+	
+	<delete id="deleteUser" parameterType="String">
+		DELETE FROM user
+		WHERE id = #{id}
+	</delete>
+	
+	<update id="updateUser" parameterType="User">
+		UPDATE user
+		SET name = #{name}, password = #{password}, email = #{email}
+		WHERE id = #{id} 
+	</update>	
+	
+	<!-- <update id="likeVideo" parameterType="hashmap">
+		UPDATE reviews
+		SET r_view_cnt = r_view_cnt + 1
+		WHERE v_id = #{videoId} and u_id = #{userId}	
+	</update> -->
+	
+	
+</mapper>

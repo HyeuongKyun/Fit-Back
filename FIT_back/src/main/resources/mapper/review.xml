@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.board.model.dao.ReviewDao">
+
+	<resultMap type="Review" id="reviewMap">
+		<result column="v_id" property="videoId"/>
+		<result column="u_id" property="userId"/>
+		<result column="r_id" property="reviewId"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="r_view_cnt" property="reviewViewCnt"/>
+		<result column="created_at" property="createAt"/>
+	</resultMap>
+	
+	<!-- 전체 리뷰 조회 -->
+	<select id="selectAll" parameterType="String" resultMap="reviewMap">
+		SELECT *
+		FROM review
+		WHERE v_id = #{videoId}
+	</select>
+	
+	<!-- 하나의 리뷰 조회 -->
+	<select id="selectOne" parameterType="int" resultMap="reviewMap">
+		SELECT *
+		FROM review
+		WHERE r_id = #{reviewId}
+	</select>
+	
+	<!-- 리뷰 등록 -->
+	<insert id="insertReview" parameterType="Review" keyProperty="reviewId" useGeneratedKeys="true">
+		INSERT INTO review (v_id, u_id, title, content)
+		VALUES (#{videoId}, #{userId}, #{title}, #{content})
+	</insert>
+	
+	<!-- 리뷰 삭제 -->
+	<delete id="deleteReview" parameterType="int">
+		DELETE FROM review
+		WHERE r_id = #{reviewId}
+	</delete>
+	
+	<!-- 게시글 업데이트 지금 한번만 등록날짜를 그냥 수정날짜처럼 활용을 해본 것이다. --> 
+	<update id="updateReview" parameterType="Review">
+		UPDATE review
+		SET title = #{title}, content = #{content}, created_at = now()
+		WHERE r_id = #{reviewId} 
+	</update>	
+	
+	<!-- 조회수 증가 -->
+	<update id="updateViewCnt" parameterType="int">
+		UPDATE review
+		SET r_view_cnt = r_view_cnt + 1
+		WHERE r_id = #{reviewId}
+	</update>
+	
+	
+</mapper>
